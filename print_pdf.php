@@ -97,15 +97,22 @@ $pdf->SetTextColor(0,0,0);
 $pdf->Cell(40,7,'Total Consumption:',0,0,'l');
 $pdf->Cell(40,7,$row['total_cubic'].' '.'(cu. m)',0,1,'l');
 
+
 // Total Amount Due
 $pdf->SetX((185)/5);
 $pdf->Cell(40,7,'Total Amount Due:',0,0,'l');
 $pdf->Cell(40,7, 'Php'.' '.$row['total_amount_due'],0,1,'l');
 
+// rate/flr
+$pdf->SetX((185)/5);
+$pdf->Cell(40,7,'Total Rate Per Floor:',0,0,'l');
+$pdf->Cell(40,7,"Php ".$row['total_amount_due']." / ".$row['total_cubic']." cu. m"." = "."Php ".$row['grand_total_cubic']." / cu. m",0,1,'l');
+
 // Due Date
 $pdf->SetX((185)/5);
 $pdf->Cell(40,7,'Payment Due Date:',0,0,'l');
 $pdf->Cell(40,7,$row['payment_due_date'],0,1,'l');
+
 
 
 

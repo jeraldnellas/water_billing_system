@@ -70,13 +70,12 @@ $row = mysqli_fetch_assoc($result);
     <table class="highlight responsive-table centered">
         <a href="index.php"><i class="material-icons">arrow_back</i></a>
         <a href="total_amount_due.php?id=<?php echo $row['id']?>" class="btn-flat right blue-text tooltipped" data-position="bottom" data-tooltip="Update Billing"><i class="material-icons">system_update_alt</i></a>
-
         <a href="note.php?id=<?php echo $row['id']?>" class="btn-flat right green-text tooltipped" data-tooltip="Add Note" data-position="bottom"><i class="material-icons">text_snippet</i>
         <a href="print_pdf.php?id=<?php echo $row['id']?>" class="btn-flat right tooltipped" target="_blank" data-position="bottom" data-tooltip="Print"><i class="material-icons">print</i></a>
        
         <br>
         <h5 class="center">Breakdown Summary</h5>
-        <p>This billing is for the date of <?php echo $row['date_bill']?> - <?php echo $row['to_date_bill']?> <?php echo $row['year']?>. </p>
+        <p>This billing is for the month of <?php echo $row['date_bill']?> - <?php echo $row['to_date_bill']?> <?php echo $row['year']?>. </p>
       <tr>
         <th>Bldg/Floor</th>
         <th>Pres. (cu. m)</th>
@@ -136,13 +135,14 @@ $row = mysqli_fetch_assoc($result);
     </table>
     </div>
    </div>
-    <p><?php echo $row['title'].' '?><?php echo $row['message']?></p>
+    <p><i><?php echo $row['title'].' '?><?php echo $row['message']?></i></p>
     <div class="summary">
         <h5>Billing Summary</h5>
         <li class="divider"></li>
         <ul>
-            <li>Total Consumption: <b><?php echo $row['total_cubic'].'(cu. m)'?></b></li>
-            <li>Total Amount Due: <b> <?php echo 'PHP '?><?php echo $row ['total_amount_due']?></b></li>
+            <li>Total Consumption: <b><?php echo $row['total_cubic'].' cu. m'?></b></li>
+            <li>Total Amount Due: <b> <?php echo 'Php '?><?php echo $row ['total_amount_due']?></b></li>
+            <li>Total Rate Per Floor: <b><?php echo 'Php '?><?php echo $row ['total_amount_due']." / ". $row['total_cubic']." cu. m"." = "?></b><?php echo '<span class="red-text">'. " Php ".$row['grand_total_cubic']." / cu. m" .'</span>'?></li>
             <li>Payment Due Date: <b><?php echo $row['payment_due_date']?></b></li>
         </ul>
     </div>

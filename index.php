@@ -32,31 +32,29 @@ $select = "SELECT * FROM `b-house_fam` LIMIT $offset, $total_records_per_page   
 $result = mysqli_query($con, $select);
 $row = mysqli_fetch_assoc($result);
 
-$date = $row['date'];
-$timestamp = strtotime($date);
-$formattedDate = date('F j, Y', $timestamp);
-
-
-
+// $date = $row['date'];
+// $timestamp = strtotime($date);
+// $formattedDate = date('F j, Y', $timestamp);
 
 if(isset($_POST['submit'])){
     $total_amount_due = $_POST['total_amount_due'];
-    $total_amount_due = round($total_amount_due, 2);
+    $formattedDate = $_POST['date'];
 
-if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
-    $insert = "INSERT INTO `b-house_fam`(`total_amount_due`) VALUES ('$total_amount_due')";
-    $total_amount_due = round($total_amount_due, 2);
-    mysqli_query($con, $insert);
-    header('location: index.php');
-    exit;
-}else{
-  
-    $err[] = "Input Amount Due";
-    header('location: index.php');
-    exit;
 
+    // Validate if the input is a valid number
+    if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
+        $total_amount_due = round(floatval($total_amount_due), 2); // Convert to float and then round
+        $insert = "INSERT INTO `b-house_fam`(`total_amount_due`, `date`) VALUES ('$total_amount_due', '$formattedDate')";
+        mysqli_query($con, $insert);
+        header('location: index.php');
+        exit;
+    } else {
+        $err[] = "Invalid Input Amount Due"; // Update the error message
+        header('location: index.php');
+        exit;
+    }
 }
-}
+
 
 ?>
 
@@ -74,21 +72,68 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
             margin-top: 40px;
         }
     </style>
+    <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* min-height: 100vh; */
+    margin-top: 40px;
+    background-color: #f0f0f0;
+  }
+
+  .container {
+    /* width: 90%; */
+    /* max-width: 800px; */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+
+  th {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  td {
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+
+  th {
+    background-color: #f0f0f0;
+  }
+
+#details {
+    position: relative;
+    padding-top: 8px;
+}
+</style>
     <title>billing records</title>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <div class="card">
-               <div class="card-content">
+            <!-- <div class="card"> -->
+               <!-- <div class="card-content"> -->
                 <a href="logout.php" class="tooltipped" data-tooltip="Logout" data-position="bottom"><i class="material-icons">logout</i></a>
                 <a href="#modal-payment" class="btn-flat green-text right modal-trigger tooltipped" data-position="bottom" data-tooltip="Add Billing"><i class="material-icons large">add</i></a>
             
-                <!-- modal payment -->
-  <div id="modal-payment" class="modal">
-    <div class="modal-content">
-    <a href="#" class="modal-close right tooltipped" data-position="right" data-tooltip="close"><i class="material-icons red-text">close</i></a>
+                        <!-- modal payment -->
+            <div id="modal-payment" class="modal bottom-sheet">
+            <div class="modal-content">
         <?php 
         if(isset($err)){
             foreach($err as $error){
@@ -97,18 +142,25 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
             }
         }
         ?>
-      <h5 class="center">Total Amount Due</h5>
+      <h5 class="center">Input Billing Received</h5>
     
       <form action="" method="post">
        
      <div class="input-field">
-     <input type="text" name="total_amount_due" onkeypress="restrictInput(event)" placeholder="Enter Amount Due" required>
+     <input type="text" name="total_amount_due" onkeypress="restrictInput(event)" placeholder="Enter Total Amount Due" required>
         <label for="">Total Amount Due</label>
      </div>
+        
+    <div class="input-field">
+     <input type="text" name="date" class="datepicker"  placeholder="Date Received">
+     <label for="">Date Received</label>
+    </div>
       
     </div>
     <div class="modal-footer">
+    <a href="#!" class="modal-close btn-flat">close</a>
      <button type="submit" name="submit" class="btn-flat blue white-text">Submit</button>
+    
       </form>
     </div>
   </div><br>
@@ -116,15 +168,14 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
                 <h5 class="center green-text">Maynilad Water Billing Record</h5><br>
                <table class="highlight responsive-table centered">
                     <thead>
-                        <tr class="black white-text">
-                            <th>Date</th>
-                            
+                        <tr>
+                            <th>Date Received</th>
                             <th>Total Amount Due</th>
                             <th>Total Consumption</th>
-                            <th>Cons./Flr.</th>
-                            <th>View Details</th>
+                            <th>Rate/Flr.</th>
+                            <th>Details</th>
                             <th>Delete</th>
-                            <th>Note</th>
+                            <th>Remarks</th>
                             
                         </tr>
                     </thead>
@@ -134,30 +185,30 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
                     
                     $select = "SELECT * FROM `b-house_fam` LIMIT $offset, $total_records_per_page   ";
                     $result = mysqli_query($con, $select);
-               
+                   
                     while($row = mysqli_fetch_array($result)){ ?>
                  
                         <tr  class="">
                          
-                            <td><?php echo $formattedDate?></td>
+                            <td><?php echo $row['date']?></td>
                             <td><?php echo 'Php '.$row['total_amount_due']?></td>
-                            <td><?php echo $row['total_cubic']?></td>
-                            <td><?php echo $row['grand_total_cubic']?></td>
-                            <td><a href="view_record_details.php?id=<?php echo $row['id'];?>" class="btn-flat blue-text" target="_blank"><i class="material-icons">visibility</i></a>
+                            <td><?php echo $row['total_cubic']." "."cu. m"?></td>
+                            <td><?php echo 'Php '. $row['grand_total_cubic']." "."/cu. m"?></td>
+                            <td>
+                            
+                            <a href="view_record_details.php?id=<?php echo $row['id'];?>" id="details" class="btn-flat blue-text tooltipped " target="_blank" data-position="top" data-tooltip="view & update details"><i class="material-icons">visibility</i></a>
                             <p><input type="hidden" name="id" value="<?php echo $row['id'] ?>"></p>
                         </td>
                         <td>
                             <form action="delete.php" method="post">
                                 <input type="hidden" name="id" value="<?php echo $row['id']?>">
-                                <button type="submit" name="delete" class="btn-flat red-text" onclick="return confirm('Are you sure! want to delete with the amount due of <?php echo $row['total_amount_due']?>?')"><i class="material-icons">delete</i></button>
+                                <button type="submit" name="delete" class="btn-flat red-text tooltipped " data-position="top" data-tooltip="delete" onclick="return confirm('Are you sure! want to delete with the amount due of <?php echo $row['total_amount_due']?>?')"><i class="material-icons">delete</i></button>
                             </form>
 
                         </td>
 
-                        </td>
-
-                        <td><a href="note.php?id=<?php echo $row['id']?>" class="btn-flat"><i class="material-icons">message</i></a>
-                        <p><input type="hidden" name="id" value="<?php echo $row['id'] ?>"></p>
+                        <td>
+                            <p><?php echo $row['remarks']?></p>
                         </td>
                         </tr>
                       
@@ -188,8 +239,8 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
                         <?php else: ?>
                             <a href="?page_no=<?= $next_page ?>"><i class="material-icons">chevron_right</i></a>
                         <?php endif; ?>
-            </li>
-</ul>
+                        </li>
+                        </ul>
 
                   <div class="p-10"><strong>Page <?=$page_no;?> of <?= $total_no_of_pages?></strong></div>
                </div>
@@ -230,7 +281,14 @@ if(preg_match("/^[0-9]*\.?[0-9]+$/", $total_amount_due)){
         $(document).ready(function(){
     $('.tooltipped').tooltip();
   });
+
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
         
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
     </script>
 </body>
 </html>

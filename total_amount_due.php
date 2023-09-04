@@ -10,7 +10,7 @@ $row = mysqli_fetch_assoc($result);
 if(isset($_POST['submit'])){
   
     $total_amount_due = $_POST['total_amount_due'];
-    $total_amount_due = round($total_amount_due, 2);
+    $total_amount_due = round(floatval($total_amount_due), 2);
     $f_pres = $_POST['1flr_pres_bill'];
     $f_prev = $_POST['1flr_prev_bill'];
     $s_pres = $_POST['2flr_pres_bill'];
@@ -28,6 +28,7 @@ if(isset($_POST['submit'])){
     $cu2 = $_POST['cu2'];
     $cu3 = $_POST['cu3'];
     $cu4 = $_POST['cu4'];
+    $date = $_POST['date'];
     
 
     // compute cu/m
@@ -40,22 +41,24 @@ if(isset($_POST['submit'])){
     $total_cu = $cu1 + $cu2 + $cu3 + $cu4;
 
     $total_cubic = $total_amount_due / $total_cu;
-    $total_cubic = round($total_cubic, 2);
+    $total_cubic = round(floatval($total_cubic), 2);
     
     $f_floor_total_calculated = $total_cubic * $cu1;
-    $f_floor_total_calculated = round($f_floor_total_calculated, 2);
+    $f_floor_total_calculated = round(floatval($f_floor_total_calculated), 2);
     $s_floor_total_calculated = $total_cubic * $cu2;
-    $s_floor_total_calculated = round($s_floor_total_calculated, 2);
+    $s_floor_total_calculated = round(floatval($s_floor_total_calculated), 2);
     $t_floor_total_calculated = $total_cubic* $cu3;
-    $t_floor_total_calculated = round($t_floor_total_calculated, 2);
+    $t_floor_total_calculated = round(floatval($t_floor_total_calculated), 2);
     $frt_floor_total_calculated = $total_cubic * $cu4;
-    $frt_floor_total_calculated = round($frt_floor_total_calculated, 2);
+    $frt_floor_total_calculated = round(floatval($frt_floor_total_calculated), 2);
 
+ 
   
-    if(!empty($total_amount_due)){
-        $update = "UPDATE `b-house_fam` SET `total_amount_due`='$total_amount_due', `1flr_pres_bill` = '$f_pres',`1flr_prev_bill` = '$f_prev', `2flr_pres_bill` = '$s_pres', `2flr_prev_bill`= '$s_prev',`3flr_pres_bill` = '$t_pres', `3flr_prev_bill` = '$t_prev', `4flr_pres_bill` = '$frt_pres', `4flr_prev_bill` = '$frt_prev', `grand_total_cubic` = '$total_cubic', `first_floor` = '$f_floor_total_calculated', `second_floor` = '$s_floor_total_calculated', `third_floor` = '$t_floor_total_calculated', `fourth_floor` = '$frt_floor_total_calculated',`date_bill` = '$date_bill', `to_date_bill` = '$to_date_bill', `year` = '$year', `payment_due_date` = '$payment_due_date', `total_cubic` = '$total_cu', `cu1` = '$cu1', `cu2` = '$cu2', `cu3` = '$cu3', `cu4` = '$cu4' WHERE id = '$identry'";
+    if(preg_match("/^[0-9]*\.?[0-9]+$/",$total_amount_due || $f_floor_total_calculated || $s_floor_total_calculated ||$t_floor_total_calculated || $frt_floor_total_calculated )){
+        
+        $update = "UPDATE `b-house_fam` SET `total_amount_due`='$total_amount_due', `1flr_pres_bill` = '$f_pres',`1flr_prev_bill` = '$f_prev', `2flr_pres_bill` = '$s_pres', `2flr_prev_bill`= '$s_prev',`3flr_pres_bill` = '$t_pres', `3flr_prev_bill` = '$t_prev', `4flr_pres_bill` = '$frt_pres', `4flr_prev_bill` = '$frt_prev', `grand_total_cubic` = '$total_cubic', `first_floor` = '$f_floor_total_calculated', `second_floor` = '$s_floor_total_calculated', `third_floor` = '$t_floor_total_calculated', `fourth_floor` = '$frt_floor_total_calculated',`date_bill` = '$date_bill', `to_date_bill` = '$to_date_bill', `year` = '$year', `payment_due_date` = '$payment_due_date', `total_cubic` = '$total_cu', `cu1` = '$cu1', `cu2` = '$cu2', `cu3` = '$cu3', `cu4` = '$cu4', `date` = '$date' WHERE id = '$identry'";
         mysqli_query($con, $update);
-        header('location: index.php');
+        header('location: view_record_details.php?id='. $row["id"]);
         $msg[] = "Successfully saved";
 
     }else{
@@ -74,7 +77,7 @@ if(isset($_POST['submit'])){
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/materialize.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title>Reading & Consumption</title>
 </head>
 <body>
     <div class="container">
@@ -85,7 +88,7 @@ if(isset($_POST['submit'])){
                    
                             <form action="" method="post">
                             <a href="view_record_details.php?id=<?php echo $row['id']?>"><i class="material-icons">arrow_back</i></a>
-                        <h5 class="center"> Create Reading & Consumption</h5><br>
+                        <h5 class="center">Reading & Consumption</h5><br>
                         <?php
                     if(isset($err)){
                         foreach($err as $error){
@@ -187,6 +190,11 @@ if(isset($_POST['submit'])){
                             <div class="input-field col s6">
                                 <input type="text" name="4flr_prev_bill" onkeypress="restrictInput(event)" placeholder="Previous cu/meter"value="<?php echo $row['4flr_prev_bill'] ?>" required>
                                 <label for="">Fourth Floor </label>
+                            </div>
+                              <!-- Date Received -->
+                              <div class="input-field col s12">
+                                <input type="text" class="datepicker" name="date" placeholder="Payment Due Date" value="<?php echo $row['date']?>">
+                                <label for="">Date Received</label>
                             </div>
                             <!-- payment due date -->
                             <div class="input-field col s12">
