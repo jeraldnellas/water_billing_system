@@ -1,7 +1,7 @@
 <?php
 $name = "localhost";
 $server = "root";
-$pass = "1003669.tsd";
+$pass = "";
 $dbname = "water_bill";
 
 $con = mysqli_connect($name, $server, $pass, $dbname);
