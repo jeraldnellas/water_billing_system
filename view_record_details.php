@@ -140,6 +140,7 @@ $row = mysqli_fetch_assoc($result);
             <li>Total Amount Due: <b> <?php echo 'Php '?><?php echo $row ['total_amount_due']?></b></li>
             <li>Total Rate Per Floor: <b><?php echo 'Php '?><?php echo $row ['total_amount_due']." / ". $row['total_cubic']." cu. m"." = "?></b><?php echo '<span class="red-text">'. " Php ".$row['grand_total_cubic']." / cu. m" .'</span>'?></li>
             <li>Payment Due Date: <b><?php echo $row['payment_due_date']?></b></li>
+            <li>Remarks: <span class="green-text"><?php echo $row['remarks']?></span></li>
         </ul>
     </div>
   </div>
