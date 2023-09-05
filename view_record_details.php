@@ -122,11 +122,7 @@ $row = mysqli_fetch_assoc($result);
       </tr>
       
       <tr class="grand_total">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      <td>Grand Total</td>
+      <td colspan="5">Grand Total</td>
         <td>PHP <?php echo $row['total_amount_due']?></td>
        
       </tr>
