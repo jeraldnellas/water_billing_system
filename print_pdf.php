@@ -5,12 +5,21 @@ $identry = $_GET['id'];
 $select = "SELECT * FROM `b-house_fam` WHERE id = '$identry'";
 $result = mysqli_query($con, $select);
 $row = mysqli_fetch_assoc($result);
+$remarks = $row['remarks'];
+if($remarks == "Paid"){
+  $msg[] = '<span class="green white-text btn-flat">'.$remarks.'</span>';
+}elseif($remarks == "Unpaid"){
+  $msg[] = '<span class="red white-text btn-flat">'.$remarks.'</span>';
+}else{
+  $msg[] = '<span class="btn-flat purple white-text">NO REMARKS SELECTED!</span>';
+}
+
 
 $pdf = new FPDF('L', 'mm', "Letter");
 
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',20);
-$pdf-> Ln(20).
+$pdf-> Ln(10).
 // title
 $pdf->SetX((185)/5);
 $pdf->MultiCell(208, 5, 'B-HOUSE MAYNILAD WATER BILLING',0,'C', false);
@@ -19,11 +28,12 @@ $pdf->SetX((185)/5);
 $pdf->SetTextColor(220,50,50);
 $pdf->MultiCell(208, 5, 'Breakdown Summary',0,'C', false);
 $pdf->SetTextColor(0,0,0);
-$pdf-> Ln(5).
+$pdf-> Ln(10).
 $pdf->SetX((190)/5);
 $pdf->SetFont('Arial','',11);
-$pdf->MultiCell(190, 5, 'This billing is for the month of '. $row['date_bill'].' - '.$row['to_date_bill'].' '. $row['year'],0,'L', false);
-$pdf-> Ln(5).
+$pdf->Cell(170, 5, 'This billing is for the month of '. $row['date_bill'].' - '.$row['to_date_bill'].' '. $row['year'],0,'0',);
+$pdf->Cell(80, 5, 'Remarks: '. $remarks,0,'1', false);
+$pdf-> Ln(3).
 $pdf->SetX((185)/5);
 $pdf->SetFont('Arial','B',11);
 $pdf->Cell(40,14,'Bldg/Floor',1,0,'C');
