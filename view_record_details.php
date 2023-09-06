@@ -6,9 +6,14 @@ $id = $_GET['id'];
 $select = "SELECT * FROM `b-house_fam` WHERE id = '$id'";
 $result = mysqli_query($con, $select);
 $row = mysqli_fetch_assoc($result);
-
-
-
+$remarks = $row['remarks'];
+if($remarks == "Paid"){
+  $msg[] = '<span class="green white-text btn-flat">'.$remarks.'</span>';
+}elseif($remarks == "Unpaid"){
+  $msg[] = '<span class="red white-text btn-flat">'.$remarks.'</span>';
+}else{
+  $msg[] = '<span class="btn-flat purple white-text">NO REMARKS SELECTED!</span>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -68,14 +73,29 @@ $row = mysqli_fetch_assoc($result);
    <div class="row">
     <div class="col s12 m12 l12">
     <table class="highlight responsive-table centered">
-        <a href="index.php"><i class="material-icons">arrow_back</i></a>
-        <a href="total_amount_due.php?id=<?php echo $row['id']?>" class="btn-flat right blue-text tooltipped" data-position="bottom" data-tooltip="Update Billing"><i class="material-icons">system_update_alt</i></a>
-        <a href="note.php?id=<?php echo $row['id']?>" class="btn-flat right green-text tooltipped" data-tooltip="Add Note" data-position="bottom"><i class="material-icons">text_snippet</i>
-        <a href="print_pdf.php?id=<?php echo $row['id']?>" class="btn-flat right tooltipped" target="_blank" data-position="bottom" data-tooltip="Print"><i class="material-icons">print</i></a>
+      <ul class="right-align">
+        <li>    <a href="print_pdf.php?id=<?php echo $row['id']?>" class="btn-flat right tooltipped" target="_blank" data-position="bottom" data-tooltip="Print"><i class="material-icons">print</i></a></li>
+        <li>  <a href="note.php?id=<?php echo $row['id']?>" class="btn-flat right green-text tooltipped" data-tooltip="Add Note" data-position="bottom"><i class="material-icons">text_snippet</i></a></li>
+        <li> <a href="total_amount_due.php?id=<?php echo $row['id']?>" class="btn-flat right blue-text tooltipped" data-position="bottom" data-tooltip="Update Billing"><i class="material-icons">system_update_alt</i></a></li>
+        <li class="left"><a href="index.php" class="tooltipped" data-tooltip="Back" data-position="bottom"><i class="material-icons">arrow_back</i></a></li>
+      </ul>
+   
+       
+      
+    
        
         <br>
-        <h5 class="center">Breakdown Summary</h5>
+        
+        <h5 class="center"><b>Breakdown Summary</b></h5>
+       
+        <span class="right"> <?php if(isset($msg)){
+              foreach($msg as $msgs)
+              echo 'Remarks: '.$msgs;
+          }
+              ?></span>
+        
         <p>This billing is for the month of <?php echo $row['date_bill']?> - <?php echo $row['to_date_bill']?> <?php echo $row['year']?>. </p>
+        
       <tr>
         <th>Bldg/Floor</th>
         <th>Pres. (cu. m)</th>
@@ -123,7 +143,7 @@ $row = mysqli_fetch_assoc($result);
       
       <tr class="grand_total">
       <td colspan="5">Grand Total</td>
-        <td>PHP <?php echo $row['total_amount_due']?></td>
+        <td class="red-text"><b>PHP <?php echo $row['total_amount_due']?></b></td>
        
       </tr>
 
@@ -132,16 +152,18 @@ $row = mysqli_fetch_assoc($result);
     </div>
    </div>
     <p><i><?php echo $row['title'].' '?><?php echo $row['message']?></i></p>
+    
     <div class="summary">
-        <h5>Billing Summary</h5>
+        <h5 class="">Billing Summary:</h5>
         <li class="divider"></li>
         <ul>
             <li>Total Consumption: <b><?php echo $row['total_cubic'].' cu. m'?></b></li>
             <li>Total Amount Due: <b> <?php echo 'Php '?><?php echo $row ['total_amount_due']?></b></li>
             <li>Total Rate Per Floor: <b><?php echo 'Php '?><?php echo $row ['total_amount_due']." / ". $row['total_cubic']." cu. m"." = "?></b><?php echo '<span class="red-text">'. " Php ".$row['grand_total_cubic']." / cu. m" .'</span>'?></li>
             <li>Payment Due Date: <b><?php echo $row['payment_due_date']?></b></li>
-            <li>Remarks: <span class="green-text"><?php echo $row['remarks']?></span></li>
+         
         </ul>
+        
     </div>
   </div>
 
