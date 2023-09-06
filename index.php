@@ -115,9 +115,9 @@ if(isset($_POST['submit'])){
     background-color: #f0f0f0;
   }
 
-#details {
+td #details {
     position: relative;
-    padding-top: 8px;
+    top: 8px;
 }
 </style>
     <title>billing records</title>
