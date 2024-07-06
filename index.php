@@ -181,13 +181,13 @@ td #details {
       <a href="#user"><img class="circle responsive-img" src="img/logo.png"></a>
     </div></li>
     <li><a href="#!"><i class="material-icons">water</i>List of Bills</a></li>
-    <li><a href="#!">First Floor</a></li>
+    <li><a href="list_of_bills/first_flr.php">First Floor</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="#!">Second Floor</a></li>
+    <li><a class="waves-effect" href="list_of_bills/second_flr.php">Second Floor</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="#!">Third Floor</a></li>
+    <li><a class="waves-effect" href="list_of_bills/third_flr.php">Third Floor</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="#!">Fourth Floor</a></li>
+    <li><a class="waves-effect" href="list_of_bills/fourth_flr.php">Fourth Floor</a></li>
   </ul>
   <a href="#" data-target="slide-out" class="sidenav-trigger "><i class="material-icons">menu</i></a>
 
