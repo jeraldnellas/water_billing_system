@@ -86,7 +86,7 @@ if(isset($_POST['submit'])){
   }
 
   .container {
-    /* width: 90%; */
+    width: 80%;
     /* max-width: 800px; */
     padding: 20px;
     box-sizing: border-box;
@@ -94,6 +94,7 @@ if(isset($_POST['submit'])){
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* margin-right: 0; */
   }
 
   table {
@@ -124,7 +125,8 @@ td #details {
     <title>Billing Records</title>
 </head>
 <body>
-<div class="container">
+   
+<div class="container dashboard">
     <div class="row">
         <div class="col s12">
             <!-- <div class="card"> -->
@@ -170,6 +172,25 @@ td #details {
              </div>       
          
                 <br>
+                 <!-- sidenav -->
+    <ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="img/water.jpeg">
+      </div>
+      <a href="#user"><img class="circle responsive-img" src="img/logo.png"></a>
+    </div></li>
+    <li><a href="#!"><i class="material-icons">water</i>List of Bills</a></li>
+    <li><a href="#!">First Floor</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="#!">Second Floor</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="#!">Third Floor</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="#!">Fourth Floor</a></li>
+  </ul>
+  <a href="#" data-target="slide-out" class="sidenav-trigger "><i class="material-icons">menu</i></a>
+
                <table class="highlight responsive-table centered">
                     <thead>
                         <tr>
@@ -294,6 +315,15 @@ td #details {
   $(document).ready(function(){
     $('.datepicker').datepicker();
   });
+    </script>
+    <script>
+        $(document).ready(function(){
+    $('.sidenav').sidenav({
+        draggable: false,
+        isFixed: true,
+        isOpen: true,
+    });
+});
     </script>
 </body>
 </html>
