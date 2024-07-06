@@ -35,12 +35,11 @@ if(mysqli_num_rows($result) > 0){
     <title>Login</title>
 </head>
 <body>
-<div class="container">
+<div class="container" style="padding-top: 40px;">
     <div class="row">
-       <div class="col s12 m10 push-l3 l6">
-       <div class="card">
+       <div class="col s12 l6 push-l3">
+       <div class="card hoverable">
             <div class="card-content center">
-                <h5>B-house Maynilad Water Billing</h5>
                 <img src="img/logo.png" width="80" alt="">
                 <?php
                     if(isset($err)){
