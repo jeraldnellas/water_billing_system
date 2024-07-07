@@ -131,7 +131,8 @@ td #details {
         <div class="col s12">
             <!-- <div class="card"> -->
                <!-- <div class="card-content"> -->
-                <a href="logout.php" class="tooltipped" data-tooltip="Logout" data-position="bottom"><i class="material-icons">logout</i></a>
+                <!-- <a href="logout.php" class="tooltipped" data-tooltip="Logout" data-position="bottom"><i class="material-icons">logout</i></a> -->
+                <a href="#" data-target="slide-out" class="sidenav-trigger "><i class="material-icons">menu</i></a>
                 <a href="#modal-payment" class="btn-flat green-text right modal-trigger tooltipped" data-position="bottom" data-tooltip="Add Billing"><i class="material-icons large">add</i></a>
             
                         <!-- modal payment -->
@@ -180,7 +181,8 @@ td #details {
       </div>
       <a href="#user"><img class="circle responsive-img" src="img/logo.png"></a>
     </div></li>
-    <li><a href="#!"><i class="material-icons">water</i>List of Bills</a></li>
+    <li class="center">Payment History</li>
+    <li><div class="divider"></div></li>
     <li><a href="list_of_bills/first_flr.php">First Floor</a></li>
     <li><div class="divider"></div></li>
     <li><a class="waves-effect" href="list_of_bills/second_flr.php">Second Floor</a></li>
@@ -188,8 +190,11 @@ td #details {
     <li><a class="waves-effect" href="list_of_bills/third_flr.php">Third Floor</a></li>
     <li><div class="divider"></div></li>
     <li><a class="waves-effect" href="list_of_bills/fourth_flr.php">Fourth Floor</a></li>
+    <li><div class="divider"></div></li>
+    <li style="padding-top: 100%;">  <a href="logout.php" data-tooltip="Logout" data-position="bottom"><i class="material-icons">logout</i>Logout</a></li>
   </ul>
-  <a href="#" data-target="slide-out" class="sidenav-trigger "><i class="material-icons">menu</i></a>
+ 
+
 
                <table class="highlight responsive-table centered">
                     <thead>

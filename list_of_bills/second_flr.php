@@ -22,7 +22,7 @@ session_start();
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <h5 class="center">Second Floor Billing List</h5>
+            <h5 class="center">Second Floor Payment History</h5>
            <table class="container centered">
             <thead>
                 <tr>
